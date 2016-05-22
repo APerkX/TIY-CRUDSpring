@@ -15,9 +15,35 @@ public class CrudSpringController {
     UserRepo userRepo;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String webRoot(Model model, HttpSession session){
+    public String webroot(HttpSession session){
 
-        return "home";
+        //redirects to create-game if user is logged in, otherwise redirects to webroot
+        if (session.getAttribute("userName") != null){
+            //return "redirect:/create-game";
+            return "home";
+
+        } else {
+            return "home";
+        }
+    }
+
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public String login(HttpSession session, String userName, String password) throws Exception{
+
+        User user = userRepo.findFirstByName(userName);
+
+        if (user == null){
+            user = new User();
+            user.setName(userName);
+            user.setPassword(password);
+            userRepo.save(user);
+
+        } else if (!user.getPassword().equals(password)) {
+            throw new Exception("Wrong password!");
+        }
+
+        session.setAttribute("userName", userName);
+        return "redirect:/";
 
     }
 
