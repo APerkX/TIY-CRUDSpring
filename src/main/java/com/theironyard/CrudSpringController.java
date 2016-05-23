@@ -14,13 +14,15 @@ public class CrudSpringController {
     @Autowired
     UserRepo userRepo;
 
+    @Autowired
+    GameRepo gameRepo;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String webroot(Model model, HttpSession session){
 
         //redirects to create-game if user is logged in, otherwise redirects to webroot
         if (session.getAttribute("userName") != null){
 
-            //todo: add userName into model for create-game mustache
             String userName = session.getAttribute("userName").toString();
             model.addAttribute("userName", userName);
             return "create-game";
@@ -56,5 +58,28 @@ public class CrudSpringController {
         return "redirect:/";
     }
 
+    //todo: make create-game route
+
+    //todo: make delete-game route
+
+    @RequestMapping(path = "/edit-game", method = RequestMethod.GET)
+    public String editGame(HttpSession session, Model model){
+
+        //checks for user in session
+        if (session.getAttribute("userName") != null){
+
+            //todo: add game info to model
+            //String gameName;
+            //model.addAttribute("gameInfo", gameInfo)
+            return "edit-game";
+
+        } else {
+
+            return "redirect:/";
+        }
+
+    }
+
+    //todo: make edit-game POST route
 
 }
