@@ -1,0 +1,46 @@
+<html>
+
+<head>
+</head>
+<body>
+<h1>
+    {{userName}}
+
+    <a href="/logout">Logout</a>
+</h1>
+
+<ol>
+    {{#gameList}}
+        <li>
+
+            {{.}}
+
+            <form action="/delete-game" method="post">
+                <input type="hidden" name="id" value="{{id}}">
+                <button type="submit" name="delete">Delete</button>
+            </form>
+
+            <form action="/edit-game" method="get">
+                <input type="hidden" name="id" value="{{id}}">
+                <button type="submit" name="edit">Edit</button>
+            </form>
+
+
+        </li>
+    {{/gameList}}
+</ol>
+
+<form action="/add-game" method="post">
+    Title
+    <input type="text" placeholder="title" name="title"/>
+
+    Genre
+    <input type="text" placeholder="genre" name="genre"/>
+
+    Platform
+    <input type="text" placeholder="platform" name="platform"/>
+    <button type="submit" name="submit">Submit</button>
+</form>
+
+</body>
+</html>

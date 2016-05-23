@@ -15,12 +15,15 @@ public class CrudSpringController {
     UserRepo userRepo;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String webroot(HttpSession session){
+    public String webroot(Model model, HttpSession session){
 
         //redirects to create-game if user is logged in, otherwise redirects to webroot
         if (session.getAttribute("userName") != null){
-            //return "redirect:/create-game";
-            return "home";
+
+            //todo: add userName into model for create-game mustache
+            String userName = session.getAttribute("userName").toString();
+            model.addAttribute("userName", userName);
+            return "create-game";
 
         } else {
             return "home";

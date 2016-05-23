@@ -1,0 +1,25 @@
+
+<html>
+<head>
+
+</head>
+<body>
+<form action="/edit-game" method="post">
+
+
+    {{#game}}
+
+        {{game}}
+        <form action="/edit-game" method="post">
+            <input type="hidden" name="id" value={{id}}>
+            <input type="text" placeholder="title" name="title"/>
+            <input type="text" placeholder="genre" name="genre"/>
+            <input type="text" placeholder="platform" name="platform"/>
+            <button type="submit" name="submit">Submit</button>
+        </form>
+
+    {{/game}}
+
+</form>
+</body>
+</html>
