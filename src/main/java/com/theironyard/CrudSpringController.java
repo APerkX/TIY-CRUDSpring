@@ -33,21 +33,27 @@ public class CrudSpringController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(HttpSession session, String userName, String password) throws Exception{
+    public String login(HttpSession session, String userName, String password, Model model) throws Exception{
 
         User user = userRepo.findFirstByName(userName);
 
         if (user == null){
             user = new User();
             user.setName(userName);
-            user.setPassword(password);
+
+            //hashes password
+            user.setPassword(PasswordHasher.createHash(password));
             userRepo.save(user);
 
-        } else if (!user.getPassword().equals(password)) {
-            throw new Exception("Wrong password!");
+            //checks for password validation
+        } else if (!PasswordHasher.verifyPassword(password, user.getPassword())) {
+            //throw new Exception("Wrong password!");
+            //todo: make the mustache say Login Failed!
+            return "redirect:/?loginFailed";
         }
 
         session.setAttribute("userName", userName);
+        model.addAttribute("games", gameRepo.findByUser(user));
         return "redirect:/";
 
     }
@@ -58,7 +64,32 @@ public class CrudSpringController {
         return "redirect:/";
     }
 
-    //todo: make create-game route
+    @RequestMapping(path = "/create-game", method = RequestMethod.POST)
+    public String createGame(HttpSession session, String name, String genre, String platform){
+
+        //kicks to webroot if not logged in
+        if (session.getAttribute("userName") == null){
+            return "redirect:/";
+        }
+
+        //init
+        Game game = new Game();
+
+        //gets current user
+        User user = userRepo.findFirstByName(session.getAttribute("userName").toString());
+
+        //makes new game
+        game.setName(name);
+        game.setGenre(genre);
+        game.setPlatform(platform);
+        game.setUser(user);
+
+        //saves new game to table
+        gameRepo.save(game);
+
+        return "redirect:/";
+
+    }
 
     //todo: make delete-game route
 

@@ -3,6 +3,8 @@ package com.theironyard;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Game {
@@ -14,6 +16,10 @@ public class Game {
     private String name;
     private String genre;
     private String platform;
+
+    @ManyToOne
+    @NotNull
+    User user;
 
     public String getName() {
         return name;
@@ -37,5 +43,13 @@ public class Game {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

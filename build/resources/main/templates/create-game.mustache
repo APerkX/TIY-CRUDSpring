@@ -10,7 +10,7 @@
 </h1>
 
 <ol>
-    {{#gameList}}
+    {{#games}}
         <li>
 
             {{.}}
@@ -27,12 +27,12 @@
 
 
         </li>
-    {{/gameList}}
+    {{/games}}
 </ol>
 
-<form action="/add-game" method="post">
+<form action="/create-game" method="post">
     Title
-    <input type="text" placeholder="title" name="title"/>
+    <input type="text" placeholder="name" name="name"/>
 
     Genre
     <input type="text" placeholder="genre" name="genre"/>
