@@ -58,7 +58,8 @@ public class CrudSpringController {
             //checks for password validation
         } else if (!PasswordHasher.verifyPassword(password, user.getPassword())) {
             //throw new Exception("Wrong password!");
-            //todo: make the mustache say Login Failed!
+            //todo: put "login failed" into model!
+            model.addAttribute("loginFailed");
             return "redirect:/?loginFailed";
         }
 
@@ -103,8 +104,12 @@ public class CrudSpringController {
     }
 
     //todo: make delete-game route
-    @RequestMapping(path = "/delete-game", method = RequestMethod.GET)
-    public String deleteGame(HttpSession session, Model model){
+    @RequestMapping(path = "/delete-game", method = RequestMethod.POST)
+    public String deleteGame(HttpSession session, Model model, String id){
+
+        //init selected game id and retrieve game from database
+        int ID = Integer.parseInt(id);
+        gameRepo.delete(ID);
 
         return "redirect:/";
     }

@@ -5,10 +5,11 @@
     Wrong Password!
 {{/loginFailed}}
 
+<!-- fix this (add toString method?)-->
 <ol>
     {{#games}}
         <li>
-            {{name}} | {{genre}} | {{platform}}
+            {{.}}
         </li>
     {{/games}}
 </ol>

@@ -6,5 +6,6 @@ import java.util.List;
 public interface GameRepo extends CrudRepository <Game, Integer> {
 
     List<Game> findByUser (User user);
+    List<Game> findById (int id);
 
 }
