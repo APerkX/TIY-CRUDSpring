@@ -1,6 +1,11 @@
 <html>
 <body>
 
+{{#loginFailed}}
+    Wrong Password!
+{{/loginFailed}}
+
+<!-- fix this (add toString method?)-->
 <ol>
     {{#games}}
         <li>
@@ -11,7 +16,8 @@
 
 Login
 <form action="/login" method="post">
-    <input type="text" placeholder="Enter your name" name="loginName"/>
+    <input type="text" placeholder="Enter your name" name="userName"/>
+    <input type="password" placeholder="Enter your password" name="password"/>
     <button type="submit">Submit</button>
 </form>
 

@@ -1,6 +1,9 @@
 package com.theironyard;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,14 +118,14 @@ public class CrudSpringController {
     }
 
     @RequestMapping(path = "/edit-game", method = RequestMethod.GET)
-    public String editGame(HttpSession session, Model model){
+    public String getEdit(HttpSession session, Model model, String id){
 
         //checks for user in session
         if (session.getAttribute("userName") != null){
 
-            //todo: add game info to model
-            //String gameName;
-            //model.addAttribute("gameInfo", gameInfo)
+            int ID = Integer.parseInt(id);
+            Game game = gameRepo.findById(ID).get(0);
+            model.addAttribute("game", game);
             return "edit-game";
 
         } else {
@@ -132,6 +135,25 @@ public class CrudSpringController {
 
     }
 
-    //todo: make edit-game POST route
+    @RequestMapping(path = "/edit-game", method = RequestMethod.POST)
+    public String editGame(HttpSession session, Model model, String id,
+                           String name, String genre, String platform){
+
+        //finds game
+        int ID = Integer.parseInt(id);
+
+        Game game = gameRepo.findById(ID).get(0);
+
+        game.setName(name);
+        game.setGenre(genre);
+        game.setPlatform(platform);
+
+        gameRepo.save(game);
+
+        //todo: make game, update game properties, SAVE GAME
+
+        return "redirect:/";
+
+    }
 
 }
