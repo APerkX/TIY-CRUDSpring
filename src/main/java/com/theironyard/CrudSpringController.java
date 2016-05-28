@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -43,7 +44,7 @@ public class CrudSpringController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(HttpSession session, String userName, String password, Model model) throws Exception{
+    public String login(HttpSession session, String userName, String password, Model model, RedirectAttributes redirectAttributes) throws Exception{
 
         //init user/games
         User user = userRepo.findFirstByName(userName);
@@ -60,10 +61,10 @@ public class CrudSpringController {
 
             //checks for password validation
         } else if (!PasswordHasher.verifyPassword(password, user.getPassword())) {
-            //throw new Exception("Wrong password!");
             //todo: put "login failed" into model!
-            model.addAttribute("loginFailed");
-            return "redirect:/?loginFailed";
+            redirectAttributes.addFlashAttribute("loginFailed", " ");
+            model.addAttribute("loginFailed", "");
+            return "redirect:/";
         }
 
         session.setAttribute("userName", userName);
@@ -149,8 +150,6 @@ public class CrudSpringController {
         game.setPlatform(platform);
 
         gameRepo.save(game);
-
-        //todo: make game, update game properties, SAVE GAME
 
         return "redirect:/";
 
